@@ -9,7 +9,9 @@ def setup_features(features)
   existing = Flipper.preload(features).map { _1.name.to_sym }
   missing = features - existing
 
-  missing.each do |feature|
+  # Flipper.preload doesn't seems to works in Docker env
+  # so manually load features...
+  features.each do |feature|
     # Feature is disabled by default
     Flipper.add(feature.to_s)
   end

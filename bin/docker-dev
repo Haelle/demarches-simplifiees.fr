@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# remove unwanted files generated when the server runs and not cleaned because of how containers are stopped
+rm -f tmp/pids/server.pid
+rm -f .overmind.sock
+
+# generate a .env file for dev and source it
+cp -f config/env.example .env
+echo "RAILS_ENV=development" >> .env
+echo "PUMA_WORKERS=1" >> .env
+echo "SUPER_ADMIN_OTP_ENABLED=disabled" >> .env
+echo "RAILS_QUEUE_ADAPTER=delayed_job" >> .env
+echo "AD_SUPER_ADMIN_GROUP=BAP" >> .env
+. ./.env
+
+IMAGE_NAME="demarches-simplifiees-development"
+
+if [ -n "$DEBUG" ]; then
+  docker rm $IMAGE_NAME-app-1 $IMAGE_NAME-db-1 $IMAGE_NAME-redis-1
+  docker volume rm demarches-simplifiees-development_pgdata
+  sudo rm -rf node_modules log/*
+  docker compose -f docker/development/docker-compose.yml -p $IMAGE_NAME up --force-recreate --build
+else
+  docker compose -f docker/development/docker-compose.yml -p $IMAGE_NAME up
+fi

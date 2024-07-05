@@ -21,6 +21,7 @@ gem 'charlock_holmes'
 gem 'chartkick'
 gem 'chunky_png'
 gem 'clamav-client', require: 'clamav/client'
+gem 'csv'
 gem 'daemons'
 gem 'deep_cloneable' # Enable deep clone of active record models
 gem 'delayed_cron_job', require: false # Cron jobs
@@ -65,6 +66,7 @@ gem 'logstash-event'
 gem 'maintenance_tasks'
 gem 'matrix' # needed by prawn and not default in ruby 3.1
 gem 'mini_magick'
+gem 'mutex_m'
 gem 'net-imap', require: false # See https://github.com/mikel/mail/pull/1439
 gem 'net-pop', require: false # same
 gem 'net-smtp', require: false # same

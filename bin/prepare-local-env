@@ -1,0 +1,10 @@
+#!/bin/bash
+
+curl -fsSL https://bun.sh/install | bash
+bun install
+
+BUNDLER_VERSION=$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1 | xargs) && \
+  gem install bundler:$BUNDLER_VERSION --conservative
+bundle install
+
+echo "/!\ You have to commit `Gemfile.lock` and `bun.lockb` they are needed for the builds /!\"

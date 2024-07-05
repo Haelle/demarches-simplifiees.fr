@@ -9,6 +9,9 @@ default_user = "test@exemple.fr"
 default_password = "this is a very complicated password !"
 
 puts "Create test user '#{default_user}'"
+# Make it idempotent when user already exist, return
+return if SuperAdmin.find_by_email(default_user)
+
 SuperAdmin.create!(email: default_user, password: default_password)
 user = User.create!(
   email: default_user,

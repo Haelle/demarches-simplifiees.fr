@@ -1,0 +1,8 @@
+#!/bin/sh
+skylight disable_dev_warning
+
+echo "-> Initialize database & clear logs"
+bin/rails db:create db:schema:load db:seed log:clear tmp:clear
+
+echo "-> Start dev server(s)"
+bin/dev
