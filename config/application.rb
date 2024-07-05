@@ -80,7 +80,8 @@ module TPS
 
     config.ds_zonage_enabled = ENV.fetch("ZONAGE_ENABLED", nil) == "enabled"
 
-    config.skylight.probes += [:active_job, :excon, :graphql, :httpclient, :redis]
+    # Remove online monitoring, no way to disable it
+    #config.skylight.probes += [:active_job, :excon, :graphql, :httpclient, :redis]
 
     # Custom Configuration
     # @see https://guides.rubyonrails.org/configuring.html#custom-configuration

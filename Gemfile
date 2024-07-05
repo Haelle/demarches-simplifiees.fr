@@ -95,7 +95,8 @@ gem 'sentry-sidekiq'
 gem 'sib-api-v3-sdk'
 gem 'sidekiq'
 gem 'sidekiq-cron'
-gem 'skylight'
+# Remove online monitoring, no way to disable it
+#gem 'skylight'
 gem 'spreadsheet_architect'
 gem 'string-similarity'
 gem 'strong_migrations' # lint database migrations

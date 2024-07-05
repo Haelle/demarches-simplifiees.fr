@@ -754,8 +754,6 @@ GEM
       rack (~> 2.2, >= 2.2.4)
       rack-protection (= 3.2.0)
       tilt (~> 2.0)
-    skylight (6.0.4)
-      activesupport (>= 5.2.0)
     smart_properties (1.17.0)
     spreadsheet_architect (5.0.0)
       caxlsx (>= 3.3.0, < 4)
@@ -1018,7 +1016,6 @@ DEPENDENCIES
   simple_xlsx_reader
   simplecov
   simplecov-cobertura
-  skylight
   spreadsheet_architect
   spring
   spring-commands-rspec
