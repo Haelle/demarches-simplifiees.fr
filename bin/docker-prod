@@ -1,0 +1,15 @@
+#!/bin/sh
+# generate a .env file for production and source it
+cp -f env.production.base .env
+cat env.production >> .env # env.production file has to me modified for production purpose
+. ./.env
+
+IMAGE_NAME="demarches-simplifiees-production"
+
+if [ -n "$DEBUG" ]; then
+  docker rm $IMAGE_NAME-app-1 $IMAGE_NAME-redis-1 $IMAGE_NAME-delayed_job-1
+  sudo rm -rf node_modules log/*
+  docker compose -f docker/production/docker-compose.yml -p $IMAGE_NAME up --force-recreate --build
+else
+  docker compose -f docker/production/docker-compose.yml -p $IMAGE_NAME up
+fi

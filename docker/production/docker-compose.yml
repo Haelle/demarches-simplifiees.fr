@@ -1,0 +1,46 @@
+services:
+  app:
+    build:
+      context: ../..
+      dockerfile: docker/production/Dockerfile
+    command: ['bin/run-prod', 'rails']
+    ports:
+      - '3001:3001'
+    environment:
+      DATABASE_URL: 'postgresql://${DB_USERNAME}:${DB_PASSWORD}@db:${DB_PORT}/${DB_DATABASE}'
+      REDIS_URL: 'redis://redis:6379/0'
+      RAILS_ENV: ${RAILS_ENV}
+      WEB_CONCURRENCY: ${PUMA_WORKERS}
+    depends_on:
+      - db
+      - redis
+      - delayed_job
+
+  delayed_job:
+    build:
+      context: ../..
+      dockerfile: docker/production/Dockerfile
+    command: ['bin/run-prod', 'delayed_job']
+    environment:
+      DATABASE_URL: 'postgresql://${DB_USERNAME}:${DB_PASSWORD}@db:${DB_PORT}/${DB_DATABASE}'
+      REDIS_URL: 'redis://redis:6379/0'
+      RAILS_ENV: ${RAILS_ENV}
+      WEB_CONCURRENCY: ${PUMA_WORKERS}
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgis/postgis:14-3.3
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - 'pgdata:/var/lib/postgresql/data'
+
+  redis:
+    image: redis:6.2
+
+volumes:
+  pgdata:

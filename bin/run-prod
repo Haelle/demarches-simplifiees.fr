@@ -1,0 +1,39 @@
+#!/bin/sh
+# source npm
+. ~/.bashrc
+
+# remove unwanted files generated when the server runs and not cleaned because of how containers are stopped
+rm tmp/pids/server.pid
+
+# wait for DB to start
+sleep 5
+
+if [ "$1" = "rails" ]; then
+  echo "== Precompiling Assets =="
+  bin/rails assets:precompile
+
+  echo "== Preparing database =="
+  # Vérifie si le schema de la base de données a été initialisé
+  result=$(bin/rails db:version)
+  if [ "$result" = "Current version: 0" ]; then
+    echo "Database not initialized, loading latest schema..."
+    bin/rails db:schema:load
+  else
+    echo "Database already initialized, migrating db..."
+    bin/rails db:migrate
+  fi
+
+  echo "== Post install scripts =="
+  bin/rails after_party:run
+  bundle exec rake jobs:schedule
+
+  echo "== Start Server =="
+  bin/rails server -p 3001 -b 0.0.0.0
+elif [ "$1" = "delayed_job" ]; then
+  echo "== Start Delayed Jobs =="
+  bin/rake jobs:work
+else
+  echo "Option non reconnue ou manquante : $1"
+  echo "Usage: $0 <rails|delayed_job>"
+  exit 1
+fi
