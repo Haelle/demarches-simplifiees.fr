@@ -4,9 +4,11 @@ class ApplicationController < ActionController::Base
   include Devise::StoreLocationExtension
   include ApplicationController::LongLivedAuthenticityToken
   include ApplicationController::ErrorHandling
+  include RemoteUserConcern
 
   MAINTENANCE_MESSAGE = 'Le site est actuellement en maintenance. Il sera à nouveau disponible dans un court instant.'
 
+  before_action :authenticate_from_remote_user
   before_action :set_sentry_user
   before_action :redirect_if_untrusted
   before_action :reject, if: -> { ENV.fetch("MAINTENANCE_MODE", 'false') == 'true' }

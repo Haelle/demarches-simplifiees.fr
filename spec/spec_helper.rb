@@ -21,6 +21,7 @@
 require 'simplecov' if ENV["CI"] || ENV["COVERAGE"] # see config in .simplecov file
 
 require 'rspec/retry'
+require 'pry'
 
 SECURE_PASSWORD = 'my-s3cure-p4ssword'
 

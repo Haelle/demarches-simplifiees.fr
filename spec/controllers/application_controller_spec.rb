@@ -207,4 +207,94 @@ describe ApplicationController, type: :controller do
       end
     end
   end
+
+  describe "Authentication from remote user headers" do
+    subject { @controller.send(:authenticate_from_remote_user) }
+
+    before do
+      request.headers['X-Remote-User'] = remote_user_email
+    end
+
+    let(:remote_user_email) { 'dummy@exemple.fr' }
+
+    context 'when user does not exist' do
+      before { subject }
+
+      it { expect(@controller.signed_in?).to eq(true) }
+      it { expect(@controller.current_user.email).to eq(remote_user_email) }
+      it { expect(SuperAdmin.find_by(email: remote_user_email)).to be_nil }
+    end
+
+    context 'when user already exists' do
+      before do
+        create(:user, email: remote_user_email)
+        subject
+      end
+
+      it { expect(@controller.signed_in?).to eq(true) }
+      it { expect(@controller.current_user.email).to eq(remote_user_email) }
+      it { expect(SuperAdmin.find_by(email: remote_user_email)).to be_nil }
+    end
+
+    context 'when X-Remote-User-Group is set' do
+      before do
+        request.headers['X-Remote-User-Group'] = remote_user_group
+      end
+
+      context 'when user should be an admin' do
+        before { subject }
+
+        let(:remote_user_group) { 'BAP' }
+
+        it { expect(@controller.signed_in?).to eq(true) }
+        it { expect(@controller.current_user.email).to eq(remote_user_email) }
+        it { expect(SuperAdmin.find_by(email: remote_user_email)).not_to be_nil }
+        it { expect(User.find_by(email: remote_user_email).instructeur).not_to be_nil }
+        it { expect(User.find_by(email: remote_user_email).administrateur).not_to be_nil }
+      end
+
+      context 'when user should not be an admin' do
+        before { subject }
+
+        let(:remote_user_group) { 'NOT_BAP' }
+
+        it { expect(@controller.signed_in?).to eq(true) }
+        it { expect(@controller.current_user.email).to eq(remote_user_email) }
+        it { expect(SuperAdmin.find_by(email: remote_user_email)).to be_nil }
+        it { expect(User.find_by(email: remote_user_email).instructeur).to be_nil }
+        it { expect(User.find_by(email: remote_user_email).administrateur).to be_nil }
+      end
+
+      context 'when user should not be an admin anymore' do
+        before do
+          create(:user, email: remote_user_email)
+          create(:super_admin, email: remote_user_email)
+          subject
+        end
+
+        let(:remote_user_group) { 'NOT_BAP' }
+
+        it { expect(@controller.signed_in?).to eq(true) }
+        it { expect(@controller.current_user.email).to eq(remote_user_email) }
+        it { expect(SuperAdmin.find_by(email: remote_user_email)).to be_nil }
+        it { expect(User.find_by(email: remote_user_email).instructeur).to be_nil }
+        it { expect(User.find_by(email: remote_user_email).administrateur).to be_nil }
+      end
+
+      context 'when user is upgraded as admin' do
+        before do
+          create(:user, email: remote_user_email)
+          subject
+        end
+
+        let(:remote_user_group) { 'BAP' }
+
+        it { expect(@controller.signed_in?).to eq(true) }
+        it { expect(@controller.current_user.email).to eq(remote_user_email) }
+        it { expect(SuperAdmin.find_by(email: remote_user_email)).not_to be_nil }
+        it { expect(User.find_by(email: remote_user_email).instructeur).not_to be_nil }
+        it { expect(User.find_by(email: remote_user_email).administrateur).not_to be_nil }
+      end
+    end
+  end
 end

@@ -142,6 +142,7 @@ group :development do
   gem 'haml-lint'
   gem 'letter_opener_web'
   gem 'memory_profiler'
+  gem 'pry'
   gem 'rack-mini-profiler'
   gem 'rails-erd', require: false # generates `doc/database_models.pdf`
   gem 'rubocop', require: false
