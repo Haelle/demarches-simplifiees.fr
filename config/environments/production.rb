@@ -48,6 +48,7 @@ Rails.application.configure do
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
+  # WARNING : for "production test" without an SSL certificate and/or without a reverse proxy comment the following line :
   config.force_ssl = true
 
   # Use the lowest log level to ensure availability of diagnostic information
@@ -179,6 +180,7 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
   Rails.application.routes.default_url_options = {
+    # WARNING : for "production test" without an SSL certificate and/or without a reverse proxy, switch to http instead of https :
     protocol: :https,
     host: ENV['APP_HOST']
   }
