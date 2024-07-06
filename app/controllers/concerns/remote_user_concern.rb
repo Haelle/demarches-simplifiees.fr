@@ -25,6 +25,14 @@ module RemoteUserConcern
     end
   end
 
+  def authenticate_super_admin
+    super_admin = SuperAdmin.find_by email: @remote_user
+
+    if super_admin
+      sign_in :super_admin, super_admin
+    end
+  end
+
   private
 
   def handle_user_switch_between_requests(user)

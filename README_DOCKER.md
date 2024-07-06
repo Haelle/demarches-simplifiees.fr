@@ -4,7 +4,6 @@ Instructions pour faire tourner DS avec Docker.
 
 > [!CAUTION]
 >
-> - La version actuelle permet à n'importe qui avec l'URL et le mdp par défaut de se connecter en super admin...
 > - La configuration du serveur SMTP n'est pas faite pour la production (cf `config/env.example.optional`)
 
 1. [Build des images](#)
@@ -24,7 +23,6 @@ Instructions pour faire tourner DS avec Docker.
 Il faut mettre à jour les fichiers de dépendances (`bun.lockb` et `Gemfile.lock`) dû au fait que l'on a ajouté des dépendances et supprimés d'autres. Cette mise à jour doit avoir lieu dans le cadre d'une installation de base ou d'une mise à jour depuis le `main` officiel.
 
 Il est nécessaire d'avoir Ruby d'installé et la version définie dans `.ruby_version` (pour installer une version spécifique de Ruby je recommande https://asdf-vm.com/)
-
 
 ```
 # Ruby et NodeJS sont nécessaires
@@ -91,6 +89,7 @@ Pour convenir à notre usage les modifications suivantes ont été apportées :
 Des tests ont été écrits pour le code produit ; les tests se lancent ainsi :
 
 ```
+# prefixer la commande avec RAILS_ENV=test si l'env détecté est différent
 ./bin/rspec spec/controllers/application_controller_spec.rb:211
 ```
 
