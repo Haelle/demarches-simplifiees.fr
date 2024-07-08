@@ -1,5 +1,9 @@
 # demarches-simplifiees.fr
 
+> [!CAUTION]
+>
+> Voir la [documentation Docker](README_DOCKER.md) !
+
 ## Contexte
 
 [demarches-simplifiees.fr](https://www.demarches-simplifiees.fr) est un site web conçu afin de répondre au besoin urgent de l'État d'appliquer la directive sur le 100 % dématérialisation pour les démarches administratives.
@@ -64,7 +68,7 @@ Selenium::WebDriver::Chrome.path = "/Applications/Brave Browser.app/Contents/Mac
 Webdrivers::Chromedriver.required_version = "103.0.5060.53"
 ```
 
-Il est également possible de faire une installation et mise à jour automatique lors de l'exécution de `bin/update` en définissant la variable d'environnement `UPDATE_WEBDRIVER`. Les binaires seront installés dans le repertoire `~/.local/bin/` qui doit être rajouté manuellement dans le path. 
+Il est également possible de faire une installation et mise à jour automatique lors de l'exécution de `bin/update` en définissant la variable d'environnement `UPDATE_WEBDRIVER`. Les binaires seront installés dans le repertoire `~/.local/bin/` qui doit être rajouté manuellement dans le path.
 
 ### Création des rôles de la base de données
 
