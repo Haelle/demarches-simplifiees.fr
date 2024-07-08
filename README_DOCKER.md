@@ -6,15 +6,15 @@ Instructions pour faire tourner DS avec Docker.
 >
 > - La configuration du serveur SMTP n'est pas faite pour la production (cf `config/env.example.optional`)
 
-1. [Build des images](#)
-  - [Setup local]()
-  - [Et build]()
-    - [Développement]()
-    - [Production]()
-2. [Mise à jour]()
-3. [Modifications appoartées]()
-4. [Test](#test)
-5. [Plus d'infos]()
+1. [Build des images](#build-de-limage)
+  - [Setup local](#setup-local)
+  - [Et build](#et-build)
+    - [Développement](#développement)
+    - [Production](#production)
+2. [Mise à jour](#mise-à-jour-depuis-le-repo-ds-officiel)
+3. [Modifications apportées](#3-modifications-apportées)
+4. [Test](#tests)
+5. [Plus d'infos](#plus-dinfos)
 
 ## Build de l'image
 
@@ -72,11 +72,11 @@ Une fois celà remplit :
 DEBUG=true ./bin/docker-prod
 ```
 
-## 2. Mise à jour depuis le repo DS officiel
+## Mise à jour depuis le repo DS officiel
 
 TODO XXX
 
-## 3. Modifications apportées
+## Modifications apportées
 
 Pour convenir à notre usage les modifications suivantes ont été apportées :
 
@@ -91,9 +91,11 @@ Des tests ont été écrits pour le code produit ; les tests se lancent ainsi :
 ```
 # prefixer la commande avec RAILS_ENV=test si l'env détecté est différent
 ./bin/rspec spec/controllers/application_controller_spec.rb:211
+# second fichier
+./bin/rspec spec/controllers/super_admins/sessions_controller_spec.rb
 ```
 
-## 4. Plus d'infos
+## Plus d'infos
 
 Les fichiers de configuration de Docker sont rangés ainsi :
 
